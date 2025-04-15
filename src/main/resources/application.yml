@@ -3,20 +3,32 @@ spring:
     name: notification
   profiles:
     active: dev
-  config:
-    import: "configserver:http://localhost:18080"
-
+  #  config:
+  #    import: "configserver:http://localhost:18080"
+  #    import: optional:file:.env[.properties]
+  datasource:
+    url: jdbc:h2:~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
 server:
-  port: 0
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:19090/eureka/
+  port: 19098
 
-message: "default message" # config server? ???? ?? ?
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:19090/eureka/
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh
+#message: "default message" # config server? ???? ?? ?
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh
