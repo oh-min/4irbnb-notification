@@ -9,7 +9,6 @@ import com.fouribnb.notification.presentation.mapper.NotificationDtoMapper;
 import com.fourirbnb.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +27,9 @@ public class NotificationInternalController {
         @RequestBody CreateNotificationRequest request) {
         CreateNotificationInternalRequest internalRequest = NotificationDtoMapper.toCreateInternalDto(
             request);
-        log.info(String.valueOf(internalRequest));
         NotificationInternalResponse internalResponse = notificationService.createNotification(
             internalRequest);
 
-        return BaseResponse.SUCCESS(NotificationDtoMapper.toResponse(internalResponse), "알림 저장");
+        return BaseResponse.SUCCESS(NotificationDtoMapper.toResponse(internalResponse), "알림 저장 성공");
     }
 }
