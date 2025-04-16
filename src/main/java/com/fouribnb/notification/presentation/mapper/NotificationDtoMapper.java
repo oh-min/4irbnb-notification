@@ -27,7 +27,7 @@ public class NotificationDtoMapper {
             .userId(internalResponse.userId())
             .title(internalResponse.title())
             .message(internalResponse.message())
-            .type(internalResponse.type())
+            .type(internalResponse.type().name())
             .isSuccess(internalResponse.isSuccess())
             .build();
         return notificationResponse;

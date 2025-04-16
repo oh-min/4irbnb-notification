@@ -10,7 +10,7 @@ public record NotificationResponse(
     Long userId,
     String title,
     String message,
-    Type type,
+    String type,
     boolean isSuccess
 ) {
 
