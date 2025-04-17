@@ -1,7 +1,7 @@
 package com.fouribnb.notification.application.service;
 
-import com.fouribnb.notification.infrastructure.dto.requestDto.ChannelRequest;
-import com.fouribnb.notification.infrastructure.dto.responseDto.ChannelResponse;
+import com.fouribnb.notification.application.dto.requestDto.ChannelRequest;
+import com.fouribnb.notification.application.dto.responseDto.ChannelResponse;
 import java.util.List;
 
 public interface ChannelService {

@@ -1,8 +1,8 @@
 package com.fouribnb.notification.application.mapper;
 
 import com.fouribnb.notification.domain.entity.Notification;
-import com.fouribnb.notification.infrastructure.dto.requestDto.ChannelRequest;
-import com.fouribnb.notification.infrastructure.dto.responseDto.ChannelResponse;
+import com.fouribnb.notification.application.dto.requestDto.ChannelRequest;
+import com.fouribnb.notification.application.dto.responseDto.ChannelResponse;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;

@@ -4,7 +4,7 @@ import com.fouribnb.notification.application.dto.requestDto.CreateNotificationIn
 import com.fouribnb.notification.application.dto.responseDto.NotificationInternalResponse;
 import com.fouribnb.notification.domain.entity.Notification;
 import com.fouribnb.notification.domain.enums.Type;
-import com.fouribnb.notification.infrastructure.dto.responseDto.ChannelResponse;
+import com.fouribnb.notification.application.dto.responseDto.ChannelResponse;
 import java.util.ArrayList;
 import java.util.List;
 

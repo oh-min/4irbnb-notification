@@ -1,4 +1,4 @@
-package com.fouribnb.notification.infrastructure.dto.responseDto;
+package com.fouribnb.notification.application.dto.responseDto;
 
 import com.fouribnb.notification.domain.enums.Type;
 import java.util.UUID;
