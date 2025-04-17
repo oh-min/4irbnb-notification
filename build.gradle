@@ -30,6 +30,9 @@ ext {
 
 dependencies {
 
+	// 슬랙
+	implementation("com.slack.api:bolt-socket-mode:1.45.3")
+
 	// 공통 모듈
 	implementation 'com.fourirbnb:common:1.2.3'
 
