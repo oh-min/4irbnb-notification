@@ -1,17 +1,16 @@
 package com.fouribnb.notification.application.mapper;
 
-import com.fouribnb.notification.domain.entity.Notification;
 import com.fouribnb.notification.application.dto.requestDto.ChannelRequest;
 import com.fouribnb.notification.application.dto.responseDto.ChannelResponse;
-import java.util.Collection;
-import java.util.Collections;
+import com.fouribnb.notification.domain.entity.Notification;
 import java.util.UUID;
 
 
 public class ChannelMapper {
 
-    // ??? -> channelDto (수정 필요)
-    public static Collection<? extends ChannelRequest> toChannelRequest(String slackId,
+    // 유저 서비스 -> channelDto
+
+    public static ChannelRequest toChannelRequest(String slackId,
         String email, String message, UUID reservationId) {
         ChannelRequest request = ChannelRequest.builder()
             .reservationId(reservationId)
@@ -19,7 +18,7 @@ public class ChannelMapper {
             .email(email)
             .text(message)
             .build();
-        return Collections.singleton(request);
+        return request;
     }
 
     // Entity -> Channle Dto

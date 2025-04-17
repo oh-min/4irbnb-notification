@@ -49,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
             String message = username + notification.getMessage();
             UUID reservationId = notification.getReservationId();
 
-            requests.addAll(
+            requests.add(
                 ChannelMapper.toChannelRequest(slackId, email, message, reservationId));
         }
         // 채널 서비스 인터페이스에 연결
