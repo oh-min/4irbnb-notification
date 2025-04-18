@@ -14,6 +14,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -23,6 +24,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final ChannelService channelService;
 
+    @Override
+    @Transactional
     public NotificationInternalResponse createNotification(
         CreateNotificationInternalRequest request) {
         Notification notification = NotificationMapper.toEntity(request);
@@ -31,6 +34,8 @@ public class NotificationServiceImpl implements NotificationService {
         return NotificationMapper.toResponse(saved);
     }
 
+    @Override
+    @Transactional
     public List<NotificationInternalResponse> sendNotification(Long userId) {
         // 유저 서비스에서 유저 정보(email, slackId) 받아오기
         String username = "임시유저"; // 임시 데이터
