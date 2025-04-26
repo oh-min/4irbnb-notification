@@ -8,5 +8,5 @@ public interface NotificationService {
 
     NotificationInternalResponse createNotification(CreateNotificationInternalRequest request);
 
-    List<NotificationInternalResponse> sendNotification(Long userId);
+    void sendNotificationScheduler();
 }

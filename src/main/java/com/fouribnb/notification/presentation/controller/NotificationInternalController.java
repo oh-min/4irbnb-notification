@@ -7,10 +7,8 @@ import com.fouribnb.notification.presentation.dto.requestDto.CreateNotificationR
 import com.fouribnb.notification.presentation.dto.responseDto.NotificationResponse;
 import com.fouribnb.notification.presentation.mapper.NotificationDtoMapper;
 import com.fourirbnb.common.response.BaseResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,12 +34,10 @@ public class NotificationInternalController {
         return BaseResponse.SUCCESS(NotificationDtoMapper.toResponse(internalResponse), "알림 저장 성공");
     }
 
-    // [알림 발송]
-    @PostMapping("/send/{userId}")
-    public BaseResponse<List<NotificationResponse>> sendNotification(@PathVariable Long userId) {
-        List<NotificationInternalResponse> internalResponse = notificationService.sendNotification(
-            userId);
-        return BaseResponse.SUCCESS(NotificationDtoMapper.toResponseList(internalResponse),"알림 발송 성공");
-    }
-
+    // [자동 알림 발송]
+//    @PostMapping("/send")
+//    public BaseResponse<Void> sendNotifications() {
+//        notificationService.sendNotificationScheduler();
+//        return BaseResponse.SUCCESS(null, "알림 자동 발송 성공");
+//    }
 }
