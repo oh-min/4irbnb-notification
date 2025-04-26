@@ -1,18 +1,19 @@
 package com.fouribnb.notification.application.service;
 
+import com.fouribnb.notification.application.dto.requestDto.ChannelRequest;
 import com.fouribnb.notification.application.dto.requestDto.CreateNotificationInternalRequest;
+import com.fouribnb.notification.application.dto.responseDto.ChannelResponse;
 import com.fouribnb.notification.application.dto.responseDto.NotificationInternalResponse;
 import com.fouribnb.notification.application.mapper.ChannelMapper;
 import com.fouribnb.notification.application.mapper.NotificationMapper;
 import com.fouribnb.notification.domain.entity.Notification;
 import com.fouribnb.notification.domain.repository.NotificationRepository;
-import com.fouribnb.notification.application.dto.requestDto.ChannelRequest;
-import com.fouribnb.notification.application.dto.responseDto.ChannelResponse;
 import com.fouribnb.notification.infrastructure.client.UserClient;
 import com.fouribnb.notification.infrastructure.client.dto.UserResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -40,39 +41,54 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Transactional
-    public List<NotificationInternalResponse> sendNotification(Long userId) {
-        // 유저 서비스에서 유저 정보(email, slackId) 받아오기
-        ResponseEntity<UserResponse> userResponse = userClient.getUser(userId);
+    public void sendNotificationScheduler() {
 
-        String username = userResponse.getBody().username();
-        String slackId = "@"+userResponse.getBody().slackId();
-        String email = userResponse.getBody().email();
+        // DB 에서 is_success false 인 데이터 가져오기
+        List<Notification> findByIsSuccess = notificationRepository.findByIsSuccess(false);
 
-        log.info("가져온 유저 네임 : {}", username);
-        log.info("가져온 유저 슬랙 아이디 : {}", slackId);
+        List<Long> userIdList = new ArrayList<>();
 
-        // 유저 아이디로 알림 정보 가져오기 (isSuccess=false)
-        List<Notification> findByUserId = notificationRepository.findByUserIdAndIsSuccess(userId,
-            false);
-
-        log.info("로그인된 유저의 알림 정보 : {}", findByUserId);
-        if(findByUserId.isEmpty()) {
-            throw new NullPointerException("해당 유저에 보낼 알림이 없습니다.");
+        for (Notification notification : findByIsSuccess) {
+            userIdList.add(notification.getUserId());
         }
+        userIdList = userIdList.stream().distinct().collect(Collectors.toList());
+        log.info("userId List : {}", userIdList);
 
-        // userId, email, slackId ->  Mapper -> ChannelRequest
-        List<ChannelRequest> requests = new ArrayList<>();
-        for (Notification notification : findByUserId) {
+        // 유저 서비스에서 해당 유저의 email, slackId 가져오기
+        for (Long userId : userIdList) {
+            ResponseEntity<UserResponse> userResponse = userClient.getUser(userId);
 
-            String message = username + notification.getMessage();
-            UUID reservationId = notification.getReservationId();
+            String username = userResponse.getBody().username();
+            String slackId = "@" + userResponse.getBody().slackId();
+            String email = userResponse.getBody().email();
 
-            requests.add(
-                ChannelMapper.toChannelRequest(slackId, email, message, reservationId));
+            log.info("가져온 유저 네임 : {}", username);
+            log.info("가져온 유저 슬랙 아이디 : {}", slackId);
+            log.info("가져온 유저 이메일 : {}", slackId);
+
+            List<Notification> findByUserId = notificationRepository.findByUserIdAndIsSuccess(
+                userId,
+                false);
+
+            log.info("로그인된 유저의 알림 정보 : {}", findByUserId);
+            if (findByUserId.isEmpty()) {
+                throw new NullPointerException("해당 유저에 보낼 알림이 없습니다.");
+            }
+
+            List<ChannelRequest> requests = new ArrayList<>();
+            for (Notification notification : findByUserId) {
+
+                String message = username + notification.getMessage();
+                UUID reservationId = notification.getReservationId();
+
+                requests.add(
+                    ChannelMapper.toChannelRequest(slackId, email, message, reservationId));
+            }
+
+            // 채널 서비스 인터페이스에 연결
+            List<ChannelResponse> sent = channelService.sendSlack(requests);
+
         }
-        // 채널 서비스 인터페이스에 연결
-        List<ChannelResponse> sent = channelService.sendSlack(requests);
-
-        return NotificationMapper.toResponseList(sent);
     }
+
 }

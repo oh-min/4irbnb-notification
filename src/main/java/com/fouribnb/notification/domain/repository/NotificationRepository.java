@@ -11,4 +11,6 @@ public interface NotificationRepository {
     List<Notification> findByUserIdAndIsSuccess(Long userId,boolean isSuccess);
 
     Notification findByReservationId(UUID reservationId);
+
+    List<Notification> findByIsSuccess(boolean b);
 }

@@ -10,4 +10,6 @@ public interface NotificationJpaRepository extends JpaRepository<Notification, U
     List<Notification> findByUserIdAndIsSuccess(Long userId, boolean isSuccess);
 
     Notification findByReservationId(UUID reservationId);
+
+    List<Notification> findByIsSuccess(boolean isSuccess);
 }

@@ -27,4 +27,9 @@ public class NotificationJpaRepositoryAdapter implements NotificationRepository 
     public Notification findByReservationId(UUID reservationId) {
         return notificationJpaRepository.findByReservationId(reservationId);
     }
+
+    @Override
+    public List<Notification> findByIsSuccess(boolean isSuccess) {
+        return notificationJpaRepository.findByIsSuccess(isSuccess);
+    }
 }
