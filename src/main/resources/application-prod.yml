@@ -1,8 +1,6 @@
-spring:
-  profiles:
-    active: prod
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: ${RDS_USERNAME}
-    password: ${RDS_PASSWORD}
-    url: jdbc:postgresql://${RDS_ENDPOINT}:${RDS_PORT}/${RDS_DB}
+#spring:
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    username: ${RDS_USERNAME}
+#    password: ${RDS_PASSWORD}
+#    url: jdbc:postgresql://${RDS_ENDPOINT}:${RDS_PORT}/${RDS_DB}

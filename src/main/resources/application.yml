@@ -5,12 +5,16 @@ server:
 spring:
   application:
     name: notification
-  profiles:
-    active: local
+#  profiles:
+#    active: local
   config:
     import: optional:file:.env[.properties]
   #    import: "configserver:http://localhost:18080"
-
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+    url: jdbc:postgresql://${RDS_ENDPOINT}:${RDS_PORT}/${RDS_DB}
 
   jpa:
     hibernate:
