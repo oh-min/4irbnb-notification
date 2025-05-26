@@ -1,8 +1,0 @@
-#spring:
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    username: ${POSTGRES_USER}
-#    password: ${POSTGRES_PASSWORD}
-#    url: jdbc:postgresql://localhost:${POSTGRES_BINDING_PORT}/${POSTGRES_DB}
-##    url: jdbc:postgresql://host.docker.internal:${POSTGRES_BINDING_PORT}/${POSTGRES_DB}
-#
