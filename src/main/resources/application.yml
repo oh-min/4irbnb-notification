@@ -5,8 +5,6 @@ server:
 spring:
   application:
     name: notification
-#  profiles:
-#    active: local
   config:
     import: optional:file:.env[.properties]
   #    import: "configserver:http://localhost:18080"
@@ -14,8 +12,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
-    url: jdbc:postgresql://${RDS_ENDPOINT}:${RDS_PORT}/${RDS_DB}
-
+    url: jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,10 +26,10 @@ user:
   service:
     url: http://localhost:${USER_SERVICE_PORT}
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://43.203.174.245:19090/eureka/
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://43.203.174.245:19090/eureka/
 
 message: "default message" # config server? ???? ?? ?
 
