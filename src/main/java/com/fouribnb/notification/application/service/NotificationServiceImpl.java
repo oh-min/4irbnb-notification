@@ -45,50 +45,40 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public void autoSendNotificationsByScheduler() {
 
-        // DB 에서 is_success false 인 데이터 가져오기
-        List<Notification> findByIsSuccess = notificationRepository.findByIsSuccess(false);
+        List<Notification> failedNotifications = notificationRepository.findByIsSuccessFalse();
 
-        List<Long> userIdList = new ArrayList<>();
+        List<Long> userIds = new ArrayList<>();
 
-        for (Notification notification : findByIsSuccess) {
-            userIdList.add(notification.getUserId());
+        for (Notification notification : failedNotifications) {
+            userIds.add(notification.getUserId());
         }
-        userIdList = userIdList.stream().distinct().collect(Collectors.toList());
-        log.info("userId List : {}", userIdList);
+        userIds = userIds.stream().distinct().collect(Collectors.toList());
 
-        // 유저 서비스에서 해당 유저의 email, slackId 가져오기
-        for (Long userId : userIdList) {
-            ResponseEntity<UserResponse> userResponse = userClient.getUser(userId);
+        for (Long userId : userIds) {
+            ResponseEntity<UserResponse> user = userClient.getUser(userId);
 
-            String username = userResponse.getBody().username();
-            String slackId = "@" + userResponse.getBody().slackId();
-            String email = userResponse.getBody().email();
+            String username = user.getBody().username();
+            String slackId = "@" + user.getBody().slackId();
+            String email = user.getBody().email();
 
-            log.info("가져온 유저 네임 : {}", username);
-            log.info("가져온 유저 슬랙 아이디 : {}", slackId);
-            log.info("가져온 유저 이메일 : {}", slackId);
+            List<Notification> pendingNotifications = notificationRepository.findByUserIdAndIsSuccessFalse(
+                userId);
 
-            List<Notification> findByUserId = notificationRepository.findByUserIdAndIsSuccess(
-                userId,
-                false);
-
-            log.info("로그인된 유저의 알림 정보 : {}", findByUserId);
-            if (findByUserId.isEmpty()) {
+            if (pendingNotifications.isEmpty()) {
                 throw new CustomException(CustomExceptionCode.NOTIFICATION_NOT_FOUND);
             }
 
-            List<ChannelRequest> requests = new ArrayList<>();
-            for (Notification notification : findByUserId) {
+            List<ChannelRequest> channelRequests = new ArrayList<>();
+            for (Notification notification : pendingNotifications) {
 
                 String message = username + notification.getMessage();
                 UUID reservationId = notification.getReservationId();
 
-                requests.add(
+                channelRequests.add(
                     ChannelMapper.toChannelRequest(slackId, email, message, reservationId));
             }
 
-            // 채널 서비스 인터페이스에 연결
-            List<ChannelResponse> sent = channelService.sendSlack(requests);
+            channelService.sendSlack(channelRequests);
 
         }
     }

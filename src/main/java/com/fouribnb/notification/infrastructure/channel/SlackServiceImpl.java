@@ -40,7 +40,6 @@ public class SlackServiceImpl implements ChannelService {
 
         for (ChannelRequest channelRequest : requests) {
             String channel = channelRequest.slackId();
-            log.info("메세지 전송을 위한 데이터 : {}", requests);
             ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel(channel)
                 .text(channelRequest.text())
@@ -48,13 +47,12 @@ public class SlackServiceImpl implements ChannelService {
             try {
                 methods.chatPostMessage(request);
 
-                // 슬랙 전송이 성공 -> isSuccess 를 true 로 변경
-                Notification notification = notificationRepository.findByReservationId(
+                Notification notificationToUpdate = notificationRepository.findByReservationId(
                     channelRequest.reservationId());
 
-                notification.setIsSuccess(true);
+                notificationToUpdate.setIsSuccess(true);
 
-                updatedNotifications.add(ChannelMapper.toResponse(notification));
+                updatedNotifications.add(ChannelMapper.toResponse(notificationToUpdate));
             } catch (Exception e) {
                 throw new CustomException(CustomExceptionCode.SLACK_SEND_FAILED, e);
             }
