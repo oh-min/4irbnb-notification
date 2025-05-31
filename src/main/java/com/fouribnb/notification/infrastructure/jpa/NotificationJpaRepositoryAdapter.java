@@ -19,8 +19,13 @@ public class NotificationJpaRepositoryAdapter implements NotificationRepository 
     }
 
     @Override
-    public List<Notification> findByUserIdAndIsSuccess(Long userId, boolean isSuccess) {
-        return notificationJpaRepository.findByUserIdAndIsSuccess(userId,false);
+    public List<Notification> findByIsSuccessFalse() {
+        return notificationJpaRepository.findByIsSuccessFalse();
+    }
+
+    @Override
+    public List<Notification> findByUserIdAndIsSuccessFalse(Long userId) {
+        return notificationJpaRepository.findByUserIdAndIsSuccessFalse(userId);
     }
 
     @Override
@@ -28,8 +33,4 @@ public class NotificationJpaRepositoryAdapter implements NotificationRepository 
         return notificationJpaRepository.findByReservationId(reservationId);
     }
 
-    @Override
-    public List<Notification> findByIsSuccess(boolean isSuccess) {
-        return notificationJpaRepository.findByIsSuccess(isSuccess);
-    }
 }

@@ -2,6 +2,8 @@ package com.fouribnb.notification.infrastructure.channel;
 
 import com.fouribnb.notification.application.mapper.ChannelMapper;
 import com.fouribnb.notification.application.service.ChannelService;
+import com.fouribnb.notification.common.exception.CustomException;
+import com.fouribnb.notification.common.exception.CustomExceptionCode;
 import com.fouribnb.notification.domain.entity.Notification;
 import com.fouribnb.notification.domain.repository.NotificationRepository;
 import com.fouribnb.notification.application.dto.requestDto.ChannelRequest;
@@ -38,7 +40,6 @@ public class SlackServiceImpl implements ChannelService {
 
         for (ChannelRequest channelRequest : requests) {
             String channel = channelRequest.slackId();
-            log.info("메세지 전송을 위한 데이터 : {}", requests);
             ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel(channel)
                 .text(channelRequest.text())
@@ -46,15 +47,14 @@ public class SlackServiceImpl implements ChannelService {
             try {
                 methods.chatPostMessage(request);
 
-                // 슬랙 전송이 성공 -> isSuccess 를 true 로 변경
-                Notification notification = notificationRepository.findByReservationId(
+                Notification notificationToUpdate = notificationRepository.findByReservationId(
                     channelRequest.reservationId());
 
-                notification.setIsSuccess(true);
+                notificationToUpdate.setIsSuccess(true);
 
-                updatedNotifications.add(ChannelMapper.toResponse(notification));
+                updatedNotifications.add(ChannelMapper.toResponse(notificationToUpdate));
             } catch (Exception e) {
-                throw new RuntimeException("Failed to send message to Slack", e);
+                throw new CustomException(CustomExceptionCode.SLACK_SEND_FAILED, e);
             }
         }
         return updatedNotifications;

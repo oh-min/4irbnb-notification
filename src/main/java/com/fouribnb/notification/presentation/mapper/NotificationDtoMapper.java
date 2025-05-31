@@ -15,10 +15,7 @@ public class NotificationDtoMapper {
         CreateNotificationRequest request) {
         CreateNotificationInternalRequest internalRequest = CreateNotificationInternalRequest.builder()
 
-            // 임시로 randomUUID 생성, 예약 서비스와 연결 후 변경 예정
-//            .reservationId(request.reservationId())
-            .reservationId(UUID.randomUUID()) // 임시
-
+            .reservationId(request.reservationId())
             .userId(request.userId())
             .lodgeId(request.lodgeId())
             .checkInDate(request.checkInDate())

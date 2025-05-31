@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NotificationJpaRepository extends JpaRepository<Notification, UUID> {
 
-    List<Notification> findByUserIdAndIsSuccess(Long userId, boolean isSuccess);
+    List<Notification> findByIsSuccessFalse();
+
+    List<Notification> findByUserIdAndIsSuccessFalse(Long userId);
 
     Notification findByReservationId(UUID reservationId);
 
-    List<Notification> findByIsSuccess(boolean isSuccess);
 }
