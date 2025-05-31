@@ -56,7 +56,7 @@ public class SlackServiceImpl implements ChannelService {
 
                 updatedNotifications.add(ChannelMapper.toResponse(notification));
             } catch (Exception e) {
-                throw new CustomException(CustomExceptionCode.SLACK_SEND_FAILED);
+                throw new CustomException(CustomExceptionCode.SLACK_SEND_FAILED, e);
             }
         }
         return updatedNotifications;

@@ -21,7 +21,7 @@ public class NotificationScheduler {
         try {
             notificationService.autoSendNotificationsByScheduler();
         } catch (Exception e) {
-            throw new CustomException(CustomExceptionCode.SCHEDULER_FAILED);
+            throw new CustomException(CustomExceptionCode.SCHEDULER_FAILED,e);
         }
 
     }
