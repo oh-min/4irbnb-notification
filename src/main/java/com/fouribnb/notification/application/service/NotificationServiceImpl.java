@@ -6,6 +6,8 @@ import com.fouribnb.notification.application.dto.responseDto.ChannelResponse;
 import com.fouribnb.notification.application.dto.responseDto.NotificationInternalResponse;
 import com.fouribnb.notification.application.mapper.ChannelMapper;
 import com.fouribnb.notification.application.mapper.NotificationMapper;
+import com.fouribnb.notification.common.exception.CustomException;
+import com.fouribnb.notification.common.exception.CustomExceptionCode;
 import com.fouribnb.notification.domain.entity.Notification;
 import com.fouribnb.notification.domain.repository.NotificationRepository;
 import com.fouribnb.notification.infrastructure.client.UserClient;
@@ -36,6 +38,7 @@ public class NotificationServiceImpl implements NotificationService {
         CreateNotificationInternalRequest request) {
         Notification notification = NotificationMapper.toEntity(request);
         Notification saved = notificationRepository.save(notification);
+        log.info("DB 저장 : {}", saved);
         log.info("DB 저장 : {}", saved);
         return NotificationMapper.toResponse(saved);
     }
@@ -74,7 +77,8 @@ public class NotificationServiceImpl implements NotificationService {
 
             log.info("로그인된 유저의 알림 정보 : {}", findByUserId);
             if (findByUserId.isEmpty()) {
-                throw new NullPointerException("해당 유저에 보낼 알림이 없습니다.");
+                throw new CustomException(CustomExceptionCode.NOTIFICATION_NOT_FOUND);
+
             }
 
             List<ChannelRequest> requests = new ArrayList<>();

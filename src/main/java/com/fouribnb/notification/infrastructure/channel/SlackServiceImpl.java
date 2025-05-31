@@ -2,6 +2,8 @@ package com.fouribnb.notification.infrastructure.channel;
 
 import com.fouribnb.notification.application.mapper.ChannelMapper;
 import com.fouribnb.notification.application.service.ChannelService;
+import com.fouribnb.notification.common.exception.CustomException;
+import com.fouribnb.notification.common.exception.CustomExceptionCode;
 import com.fouribnb.notification.domain.entity.Notification;
 import com.fouribnb.notification.domain.repository.NotificationRepository;
 import com.fouribnb.notification.application.dto.requestDto.ChannelRequest;
@@ -54,7 +56,7 @@ public class SlackServiceImpl implements ChannelService {
 
                 updatedNotifications.add(ChannelMapper.toResponse(notification));
             } catch (Exception e) {
-                throw new RuntimeException("Failed to send message to Slack", e);
+                throw new CustomException(CustomExceptionCode.SLACK_SEND_FAILED);
             }
         }
         return updatedNotifications;
