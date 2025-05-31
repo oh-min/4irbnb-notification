@@ -12,11 +12,19 @@ public class NotificationMapper {
 
     // 내부 Dto -> Entity
     public static Notification toEntity(CreateNotificationInternalRequest request) {
+        final String NOTIFICATION_MESSAGE_TEMPLATE = "님의 예약하신 숙소가 %s로 변경되었습니다.\n" +
+            "예약 정보\n" +
+            "숙소 : %s\n" +
+            "체크인 : %s\n" +
+            "체크아웃 : %s";
 
-        String message =
-            "님의 예약하신 숙소가 " + request.reservationStatus() + "로 변경되었습니다. \n예약 정보 \n숙소 : "
-                + request.lodgeId() + "\n체크인 : " + request.checkInDate() + "\n체크아웃 : "
-                + request.checkOutDate();
+        String message = String.format(
+            NOTIFICATION_MESSAGE_TEMPLATE,
+            request.reservationStatus(),
+            request.lodgeId(),
+            request.checkInDate(),
+            request.checkOutDate()
+        );
 
         Notification notification = Notification.builder()
             .reservationId(request.reservationId())
