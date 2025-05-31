@@ -28,7 +28,7 @@ public class NotificationInternalController {
         @RequestBody CreateNotificationRequest request) {
         CreateNotificationInternalRequest internalRequest = NotificationDtoMapper.toCreateInternalDto(
             request);
-        NotificationInternalResponse internalResponse = notificationService.createNotification(
+        NotificationInternalResponse internalResponse = notificationService.addNotification(
             internalRequest);
 
         return BaseResponse.SUCCESS(NotificationDtoMapper.toResponse(internalResponse), "알림 저장 성공");
@@ -37,7 +37,7 @@ public class NotificationInternalController {
     // [자동 알림 발송]
 //    @PostMapping("/send")
 //    public BaseResponse<Void> sendNotifications() {
-//        notificationService.sendNotificationScheduler();
+//        notificationService.autoSendNotificationsByScheduler();
 //        return BaseResponse.SUCCESS(null, "알림 자동 발송 성공");
 //    }
 }

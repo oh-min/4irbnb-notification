@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface NotificationService {
 
-    NotificationInternalResponse createNotification(CreateNotificationInternalRequest request);
+    NotificationInternalResponse addNotification(CreateNotificationInternalRequest request);
 
-    void sendNotificationScheduler();
+    void autoSendNotificationsByScheduler();
 }

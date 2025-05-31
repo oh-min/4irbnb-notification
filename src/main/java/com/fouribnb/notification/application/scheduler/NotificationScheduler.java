@@ -17,7 +17,7 @@ public class NotificationScheduler {
     public void scheduleTask() {
 
         try {
-            notificationService.sendNotificationScheduler();
+            notificationService.autoSendNotificationsByScheduler();
         } catch (Exception e) {
             log.error("알림 발송 스케줄러 오류 발생 : ", e);
         }

@@ -29,9 +29,10 @@ public class NotificationServiceImpl implements NotificationService {
     private final ChannelService channelService;
     private final UserClient userClient;
 
+    // [알림 생성]
     @Override
     @Transactional
-    public NotificationInternalResponse createNotification(
+    public NotificationInternalResponse addNotification(
         CreateNotificationInternalRequest request) {
         Notification notification = NotificationMapper.toEntity(request);
         Notification saved = notificationRepository.save(notification);
@@ -39,9 +40,10 @@ public class NotificationServiceImpl implements NotificationService {
         return NotificationMapper.toResponse(saved);
     }
 
+    // [자동 알림 발송]
     @Override
     @Transactional
-    public void sendNotificationScheduler() {
+    public void autoSendNotificationsByScheduler() {
 
         // DB 에서 is_success false 인 데이터 가져오기
         List<Notification> findByIsSuccess = notificationRepository.findByIsSuccess(false);
