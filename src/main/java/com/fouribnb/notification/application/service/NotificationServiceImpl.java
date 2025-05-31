@@ -34,12 +34,9 @@ public class NotificationServiceImpl implements NotificationService {
     // [알림 생성]
     @Override
     @Transactional
-    public NotificationInternalResponse addNotification(
-        CreateNotificationInternalRequest request) {
+    public NotificationInternalResponse addNotification(CreateNotificationInternalRequest request) {
         Notification notification = NotificationMapper.toEntity(request);
         Notification saved = notificationRepository.save(notification);
-        log.info("DB 저장 : {}", saved);
-        log.info("DB 저장 : {}", saved);
         return NotificationMapper.toResponse(saved);
     }
 
@@ -78,7 +75,6 @@ public class NotificationServiceImpl implements NotificationService {
             log.info("로그인된 유저의 알림 정보 : {}", findByUserId);
             if (findByUserId.isEmpty()) {
                 throw new CustomException(CustomExceptionCode.NOTIFICATION_NOT_FOUND);
-
             }
 
             List<ChannelRequest> requests = new ArrayList<>();
