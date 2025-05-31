@@ -10,8 +10,8 @@ spring:
   #    import: "configserver:http://localhost:18080"
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: ${RDS_USERNAME}
-    password: ${RDS_PASSWORD}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     url: jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}
   jpa:
     hibernate:
