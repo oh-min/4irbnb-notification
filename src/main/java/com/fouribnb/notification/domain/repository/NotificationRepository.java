@@ -8,7 +8,7 @@ public interface NotificationRepository {
 
     Notification save(Notification notification);
 
-    List<Notification> findByUserIdAndIsSuccess(Long userId,boolean isSuccess);
+    List<Notification> findByUserIdAndIsSuccess(Long userId, boolean isSuccess);
 
     Notification findByReservationId(UUID reservationId);
 
